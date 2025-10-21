@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RapMaster Music</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #fff;
+            min-height: 100vh;
+            padding-bottom: 50px;
+        }
+        
+        header {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 20px 0;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+        }
+        
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #ff8a00, #e52e71);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 10px rgba(229, 46, 113, 0.3);
+        }
+        
+        .tagline {
+            font-size: 1.2rem;
+            color: #b0b0b0;
+            margin-bottom: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .search-container {
+            display: flex;
+            justify-content: center;
+            margin: 30px 0;
+        }
+        
+        #search {
+            width: 70%;
+            max-width: 500px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        #search:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .songs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        
+        .song-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .song-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+        }
+        
+        .song-image {
+            width: 100%;
+            height: 180px;
+            background: linear-gradient(45deg, #ff8a00, #e52e71);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+        }
+        
+        .song-info {
+            padding: 20px;
+        }
+        
+        .song-title {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+        
+        .song-artist {
+            color: #e52e71;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        .song-duration {
+            color: #b0b0b0;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+        
+        .play-btn {
+            background: linear-gradient(90deg, #ff8a00, #e52e71);
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        
+        .play-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(229, 46, 113, 0.4);
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 40px;
+            font-size: 1.2rem;
+            color: #b0b0b0;
+            grid-column: 1 / -1;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            color: #777;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .songs-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .songs-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>RapMaster Music</h1>
+            <p class="tagline">Лучшие рэп-треки в одном месте</p>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="search-container">
+            <input type="text" id="search" placeholder="Поиск песен, артистов...">
+        </div>
+        
+        <div class="songs-grid" id="songs-container">
+            <!-- Песни будут загружены с помощью JavaScript -->
+        </div>
+    </div>
+    
+    <footer>
+        <div class="container">
+            <p>RapMaster Music &copy; 2023 | Все права защищены</p>
+        </div>
+    </footer>
+
+    <script>
+        // Массив с песнями - замените на свои треки
+        const songs = [
+            {
+                id: 1,
+                title: "Город дорог",
+                artist: "RapMaster",
+                duration: "3:45",
+                cover: "🎤"
+            },
+            {
+                id: 2,
+                title: "Без компромиссов",
+                artist: "RapMaster ft. MC Flow",
+                duration: "4:12",
+                cover: "🎵"
+            },
+            {
+                id: 3,
+                title: "На вершине",
+                artist: "RapMaster",
+                duration: "3:28",
+                cover: "🔥"
+            },
+            {
+                id: 4,
+                title: "Улицы говорят",
+                artist: "RapMaster",
+                duration: "3:55",
+                cover: "🏙️"
+            },
+            {
+                id: 5,
+                title: "Ритм мегаполиса",
+                artist: "RapMaster",
+                duration: "4:05",
+                cover: "🌃"
+            },
+            {
+                id: 6,
+                title: "Бит за битом",
+                artist: "RapMaster ft. BeatMaker",
+                duration: "3:37",
+                cover: "🎧"
+            },
+            {
+                id: 7,
+                title: "Вне времени",
+                artist: "RapMaster",
+                duration: "4:20",
+                cover: "⏳"
+            },
+            {
+                id: 8,
+                title: "Звук души",
+                artist: "RapMaster",
+                duration: "3:50",
+                cover: "💫"
+            }
+        ];
+
+        // Функция для отображения песен
+        function displaySongs(songsArray) {
+            const container = document.getElementById('songs-container');
+            container.innerHTML = '';
+            
+            if (songsArray.length === 0) {
+                container.innerHTML = '<div class="no-results">Песни не найдены. Попробуйте другой запрос.</div>';
+                return;
+            }
+            
+            songsArray.forEach(song => {
+                const songCard = document.createElement('div');
+                songCard.className = 'song-card';
+                songCard.innerHTML = `
+                    <div class="song-image">${song.cover}</div>
+                    <div class="song-info">
+                        <h3 class="song-title">${song.title}</h3>
+                        <p class="song-artist">${song.artist}</p>
+                        <p class="song-duration">${song.duration}</p>
+                        <button class="play-btn" data-id="${song.id}">Слушать</button>
+                    </div>
+                `;
+                container.appendChild(songCard);
+            });
+            
+            // Добавляем обработчики событий для кнопок воспроизведения
+            document.querySelectorAll('.play-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const songId = this.getAttribute('data-id');
+                    playSong(songId);
+                });
+            });
+        }
+
+        // Функция для воспроизведения песни
+        function playSong(songId) {
+            const song = songs.find(s => s.id == songId);
+            if (song) {
+                alert(`Воспроизведение: "${song.title}" - ${song.artist}`);
+                // Здесь можно добавить реальный плеер
+            }
+        }
+
+        // Функция для поиска песен
+        function searchSongs(query) {
+            const filteredSongs = songs.filter(song => 
+                song.title.toLowerCase().includes(query.toLowerCase()) || 
+                song.artist.toLowerCase().includes(query.toLowerCase())
+            );
+            displaySongs(filteredSongs);
+        }
+
+        // Инициализация при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            displaySongs(songs);
+            
+            // Обработчик поиска
+            document.getElementById('search').addEventListener('input', function() {
+                searchSongs(this.value);
+            });
+        });
+    </script>
+</body>
+</html>
